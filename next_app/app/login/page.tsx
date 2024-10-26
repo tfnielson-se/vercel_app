@@ -21,7 +21,7 @@ export default function Login() {
       })
 
       if (response.ok) {
-        router.push('/products')
+        router.push('/users')
       } else {
         const data = await response.json()
         setError(data.error || 'Login failed')
