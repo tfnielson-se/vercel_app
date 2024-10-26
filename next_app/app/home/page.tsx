@@ -1,13 +1,19 @@
+import { sql } from "@vercel/postgres";
 
+export default async function Cart({
+  params
+}: {
+  params: { user: string }
+}): Promise<JSX.Element> {
+  const { rows } = await sql`SELECT * from PRODUCTS`;
 
-export default function Home() {
   return (
-    <div className="">
-      <main className="">
-        <div className="redbox">
-          <p>Welcome to the shop</p>
-          </div>
-      </main>
+    <div>
+      {rows.map((row) => (
+        <div key={row.id}>
+          {row.id} - {row.quantity}
+        </div>
+      ))}
     </div>
   );
 }
