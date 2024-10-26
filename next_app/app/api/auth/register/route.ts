@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
-const bcrypt = require('bcryptjs')
+var bcrypt = require('bcryptjs')
 
 export async function POST(request: Request) {
   const { name, email, password } = await request.json()
