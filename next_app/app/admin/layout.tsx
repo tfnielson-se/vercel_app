@@ -18,6 +18,9 @@ export default function AdminLayout({
           <Link href="/admin/orders" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">
             Manage Orders
           </Link>
+          <Link href="/admin/users" className="block py-2 px-4 text-gray-700 hover:bg-gray-200">
+            Manage Users
+          </Link>
         </nav>
       </aside>
       <main className="flex-1 p-8 overflow-y-auto">
