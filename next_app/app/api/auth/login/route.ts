@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
-let bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
 let jwt = require('jsonwebtoken');
 
 
