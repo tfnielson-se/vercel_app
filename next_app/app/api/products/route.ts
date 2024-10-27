@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
-const bcrypt = require('bcryptjs');
 
 export async function GET() {
   try {
@@ -13,7 +12,6 @@ export async function GET() {
         description: true,
         price: true,
         image: true
-
       },
     })
     return NextResponse.json(products)

@@ -9,10 +9,10 @@ export async function POST(request: Request) {
 
     const order = await prisma.order.create({
       data: {
-        userId: 'guest', // Replace with actual user ID when authentication is implemented
+        userId: '',
         status: 'pending',
-        total: total,
-        shippingAddress: JSON.stringify(shippingDetails),
+        // total: total,
+        // shippingAddress: JSON.stringify(shippingDetails),
         items: {
           create: items.map((item: any) => ({
             productId: item.id,

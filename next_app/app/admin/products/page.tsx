@@ -22,89 +22,48 @@ function AdminProducts() {
   }, [])
 
   const fetchProducts = async () => {
+    setIsLoading(true)
     try {
-      setIsLoading(true)
       const response = await fetch('/api/admin/products')
-      if (!response.ok) {
-        throw new Error('Failed to fetch products')
-      }
+      if (!response.ok) throw new Error('Failed to fetch products')
       const data = await response.json()
       setProducts(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while fetching products')
+      setError(err instanceof Error ? err.message : 'Error fetching products')
     } finally {
       setIsLoading(false)
     }
   }
 
   const handleSaveProduct = async (product: Product) => {
-    try {
-      const url = product.id ? `/api/admin/products/${product.id}` : '/api/admin/products'
-      const method = 'POST'
+    const method = product.id ? 'PATCH' : 'POST'
+    const url = product.id ? `/api/admin/products/${product.id}` : '/api/admin/products'
 
+    try {
       const response = await fetch(url, {
-        method: method,
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(product),
       })
-
-      if (!response.ok) {
-        throw new Error('Failed to save product')
-      }
-
+      if (!response.ok) throw new Error('Failed to save product')
       await fetchProducts()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while saving the product')
+      setError(err instanceof Error ? err.message : 'Error saving product')
     }
   }
 
   const handleDeleteProduct = async (id: string) => {
     try {
-      const response = await fetch(`/api/admin/products/${id}`, {
-        method: 'DELETE',
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to delete product')
-      }
-
+      const response = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
+      if (!response.ok) throw new Error('Failed to delete product')
       await fetchProducts()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while deleting the product')
+      setError(err instanceof Error ? err.message : 'Error deleting product')
     }
   }
 
-  if (isLoading) {
-    return <div className="text-center mt-8">Loading products...</div>
-  }
-
-  if (error) {
-    return <div className="text-center mt-8 text-red-600">{error}</div>
-  }
-
-  const handleUpdateProduct = async (id: string) => {
-    try {
-      const response = await fetch(`/api/admin/products/${id}`, {
-        method: 'PUT',
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to Update product')
-      }
-
-      await fetchProducts()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while updating the product')
-    }
-  }
-
-  if (isLoading) {
-    return <div className="text-center mt-8">Loading products...</div>
-  }
-
-  if (error) {
-    return <div className="text-center mt-8 text-red-600">{error}</div>
-  }
+  if (isLoading) return <div className="text-center mt-8">Loading products...</div>
+  if (error) return <div className="text-center mt-8 text-red-600">{error}</div>
 
   return (
     <div className="container mx-auto p-4">

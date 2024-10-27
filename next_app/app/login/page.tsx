@@ -20,7 +20,7 @@ export default function Login() {
     if (result?.error) {
       console.error(result.error)
     } else {
-      router.push('/')
+      router.push('/admin/users')
       router.refresh()
     }
   }

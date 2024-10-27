@@ -11,6 +11,7 @@ interface ProductCardProps {
   image: string
   onSave: (product: { id?: string; name: string; description: string; price: number; image: string }) => void
   onDelete?: () => void
+  onUpdate?: (product: { id?: string; name: string; description: string; price: number; image: string }) => void
 }
 
 export default function ProductCard({ id, name: initialName, description: initialDescription, price: initialPrice, image: initialImage, onSave, onDelete }: ProductCardProps) {

@@ -21,7 +21,7 @@ function AdminUsers() {
   useEffect(() => {
     fetchUsers()
   }, [])
-console.log(users)
+  console.log(users)
   const fetchUsers = async () => {
     try {
       setIsLoading(true)
@@ -160,7 +160,7 @@ console.log(users)
         )}
       </form>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full bg-black">
           <thead>
             <tr>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">

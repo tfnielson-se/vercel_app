@@ -31,6 +31,8 @@ export async function POST(request: Request) {
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(process.env.JWT_SECRET))
 
+      console.log(token)
+
     ;(await cookies()).set('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

@@ -43,6 +43,15 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
+  session: {
+    // Specify the session strategy as 'jwt' for token-based sessions
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+  },
+  jwt: {
+    // Extend JWT lifespan for session persistence
+    maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -52,14 +61,13 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.sub as string
         session.user.is_admin = token.is_admin as boolean
       }
       return session
     },
   },
   pages: {
-    signIn: '/login',
+    signIn: '/admin/users',
   },
 }
 
