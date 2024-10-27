@@ -40,7 +40,7 @@ function AdminProducts() {
   const handleSaveProduct = async (product: Product) => {
     try {
       const url = product.id ? `/api/admin/products/${product.id}` : '/api/admin/products'
-      const method = product.id ? 'PUT' : 'POST'
+      const method = 'POST'
 
       const response = await fetch(url, {
         method: method,
@@ -82,6 +82,30 @@ function AdminProducts() {
     return <div className="text-center mt-8 text-red-600">{error}</div>
   }
 
+  const handleUpdateProduct = async (id: string) => {
+    try {
+      const response = await fetch(`/api/admin/products/${id}`, {
+        method: 'PUT',
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to Update product')
+      }
+
+      await fetchProducts()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while updating the product')
+    }
+  }
+
+  if (isLoading) {
+    return <div className="text-center mt-8">Loading products...</div>
+  }
+
+  if (error) {
+    return <div className="text-center mt-8 text-red-600">{error}</div>
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Manage Products</h1>
@@ -92,13 +116,13 @@ function AdminProducts() {
           description=""
           price={0}
           image=""
-          onSave={handleSaveProduct}
+          onSave={() => handleSaveProduct}
         />
         {products.map((product) => (
           <ProductCard
             key={product.id}
             {...product}
-            onSave={handleSaveProduct}
+            onSave={() => handleSaveProduct(product)}
             onDelete={() => handleDeleteProduct(product.id)}
           />
         ))}

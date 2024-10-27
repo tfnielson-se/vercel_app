@@ -11,7 +11,8 @@ export async function GET() {
         id: true,
         name: true,
         email: true,
-
+        is_admin: true,
+        updatedAt: true,
         createdAt: true,
       },
     })

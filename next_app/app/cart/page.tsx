@@ -45,7 +45,7 @@ export default function Cart() {
             ))}
           </div>
           <div className="mt-4">
-            <p className="text-xl font-bold">Total: ${total}</p>
+            <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
             <Link href="/checkout" className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 inline-block">
               Proceed to Checkout
             </Link>

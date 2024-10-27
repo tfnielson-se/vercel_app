@@ -48,7 +48,13 @@ export default function ProductList() {
             <h2 className="text-lg font-semibold">{product.name}</h2>
             <p className="text-gray-600">${product.price.toFixed(2)}</p>
             <button
-              onClick={() => addToCart({ id: product.id, name: product.name, price: product.price, quantity: 1 })}
+              onClick={() => addToCart({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                total: product.price * 1
+              })}
               className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Add to Cart
