@@ -1,111 +1,110 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { withAdminAuth } from '../../components/withAdminAuth'
+import ProductCard from '../../components/ProductCard'
 
 interface Product {
   id: string
   name: string
   description: string
   price: number
-  image: string | null
+  image: string
 }
 
-export default function ManageProducts() {
+function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([])
-  const [newProduct, setNewProduct] = useState({ name: '', description: '', price: 0, image: '' })
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchProducts()
   }, [])
 
   const fetchProducts = async () => {
-    const response = await fetch('/api/admin/products')
-    const data = await response.json()
-    setProducts(data)
+    try {
+      setIsLoading(true)
+      const response = await fetch('/api/admin/products')
+      if (!response.ok) {
+        throw new Error('Failed to fetch products')
+      }
+      const data = await response.json()
+      setProducts(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while fetching products')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setNewProduct(prev => ({ ...prev, [name]: value }))
+  const handleSaveProduct = async (product: Product) => {
+    try {
+      const url = product.id ? `/api/admin/products/${product.id}` : '/api/admin/products'
+      const method = product.id ? 'PUT' : 'POST'
+
+      const response = await fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save product')
+      }
+
+      await fetchProducts()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while saving the product')
+    }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await fetch('/api/admin/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newProduct),
-    })
-    setNewProduct({ name: '', description: '', price: 0, image: '' })
-    fetchProducts()
+  const handleDeleteProduct = async (id: string) => {
+    try {
+      const response = await fetch(`/api/admin/products/${id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete product')
+      }
+
+      await fetchProducts()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while deleting the product')
+    }
   }
 
-  const handleDelete = async (id: string) => {
-    await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
-    fetchProducts()
+  if (isLoading) {
+    return <div className="text-center mt-8">Loading products...</div>
+  }
+
+  if (error) {
+    return <div className="text-center mt-8 text-red-600">{error}</div>
   }
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Manage Products</h1>
-      <form onSubmit={handleSubmit} className="mb-8 space-y-4">
-        <input
-          type="text"
-          name="name"
-          value={newProduct.name}
-          onChange={handleInputChange}
-          placeholder="Product Name"
-          className="w-full p-2 border rounded"
-          required
-        />
-        <textarea
-          name="description"
-          value={newProduct.description}
-          onChange={handleInputChange}
-          placeholder="Product Description"
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="number"
-          name="price"
-          value={newProduct.price}
-          onChange={handleInputChange}
-          placeholder="Price"
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="text"
-          name="image"
-          value={newProduct.image}
-          onChange={handleInputChange}
-          placeholder="Image URL"
-          className="w-full p-2 border rounded"
-        />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Add Product
-        </button>
-      </form>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map(product => (
-          <div key={product.id} className="border p-4 rounded">
-            <h2 className="text-xl font-semibold">{product.name}</h2>
-            <p className="text-gray-600">{product.description}</p>
-            <p className="text-lg font-bold mt-2">${product.price.toFixed(2)}</p>
-            {product.image && <img src={product.image} alt={product.name} className="mt-2 w-full h-40 object-cover" />}
-            <button
-              onClick={() => handleDelete(product.id)}
-              className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-            >
-              Delete
-            </button>
-          </div>
+        <ProductCard
+          id=""
+          name=""
+          description=""
+          price={0}
+          image=""
+          onSave={handleSaveProduct}
+        />
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            {...product}
+            onSave={handleSaveProduct}
+            onDelete={() => handleDeleteProduct(product.id)}
+          />
         ))}
       </div>
     </div>
   )
 }
+
+export default withAdminAuth(AdminProducts)

@@ -1,9 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { withAdminAuth } from '../../components/withAdminAuth'
 
 interface User {
   id: string
@@ -13,19 +11,31 @@ interface User {
   createdAt: string
 }
 
-export default function ManageUsers() {
+function AdminUsers() {
   const [users, setUsers] = useState<User[]>([])
   const [newUser, setNewUser] = useState({ name: '', email: '', password: '', is_admin: false })
   const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchUsers()
   }, [])
 
   const fetchUsers = async () => {
-    const response = await fetch('/api/admin/users')
-    const data = await response.json()
-    setUsers(data)
+    try {
+      setIsLoading(true)
+      const response = await fetch('/api/admin/users')
+      if (!response.ok) {
+        throw new Error('Failed to fetch users')
+      }
+      const data = await response.json()
+      setUsers(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while fetching users')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,22 +50,32 @@ export default function ManageUsers() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (editingUser) {
-      await fetch(`/api/admin/users/${editingUser.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editingUser),
-      })
-      setEditingUser(null)
-    } else {
-      await fetch('/api/admin/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newUser),
-      })
-      setNewUser({ name: '', email: '', password: '', is_admin: false })
+    try {
+      if (editingUser) {
+        const response = await fetch(`/api/admin/users/${editingUser.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(editingUser),
+        })
+        if (!response.ok) {
+          throw new Error('Failed to update user')
+        }
+        setEditingUser(null)
+      } else {
+        const response = await fetch('/api/admin/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newUser),
+        })
+        if (!response.ok) {
+          throw new Error('Failed to create user')
+        }
+        setNewUser({ name: '', email: '', password: '', is_admin: false })
+      }
+      await fetchUsers()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while saving the user')
     }
-    fetchUsers()
   }
 
   const handleEdit = (user: User) => {
@@ -63,8 +83,23 @@ export default function ManageUsers() {
   }
 
   const handleDelete = async (id: string) => {
-    await fetch(`/api/admin/users/${id}`, { method: 'DELETE' })
-    fetchUsers()
+    try {
+      const response = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' })
+      if (!response.ok) {
+        throw new Error('Failed to delete user')
+      }
+      await fetchUsers()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while deleting the user')
+    }
+  }
+
+  if (isLoading) {
+    return <div className="text-center mt-8">Loading users...</div>
+  }
+
+  if (error) {
+    return <div className="text-center mt-8 text-red-600">{error}</div>
   }
 
   return (
@@ -173,3 +208,5 @@ export default function ManageUsers() {
     </div>
   )
 }
+
+export default withAdminAuth(AdminUsers)

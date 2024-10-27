@@ -14,15 +14,29 @@ interface Product {
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const { addToCart } = useCart()
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch('/api/products')
-      const data = await response.json()
-      setProducts(data)
-    }
     fetchProducts()
   }, [])
+
+  const fetchProducts = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch('/api/admin/products')
+      if (!response.ok) {
+        throw new Error('Failed to fetch products')
+      }
+      const data = await response.json()
+      setProducts(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while fetching products')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div>

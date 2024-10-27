@@ -3,9 +3,9 @@ import { PrismaClient } from '@prisma/client'
 import { SignJWT } from 'jose'
 import { cookies } from 'next/headers'
 import { nanoid } from 'nanoid'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
-const bcrypt = require('bcryptjs')
 
 
 export async function POST(request: Request) {
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(process.env.JWT_SECRET))
 
-    cookies().set('token', token, {
+    ;(await cookies()).set('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
