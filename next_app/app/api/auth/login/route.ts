@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
+import { SignJWT } from 'jose'
+import { cookies } from 'next/headers'
+import { nanoid } from 'nanoid'
 
 const prisma = new PrismaClient()
-var bcrypt = require('bcryptjs')
-var jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs')
 
 
 export async function POST(request: Request) {
@@ -22,9 +24,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 })
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: '1h' })
+    const token = await new SignJWT({ userId: user.id })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setJti(nanoid())
+      .setIssuedAt()
+      .setExpirationTime('1h')
+      .sign(new TextEncoder().encode(process.env.JWT_SECRET))
 
-    return NextResponse.json({ token })
+    cookies().set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600,
+      path: '/',
+    })
+
+    return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Error in auth route:', error)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })

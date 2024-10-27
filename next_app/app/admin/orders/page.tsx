@@ -9,8 +9,10 @@ interface Order {
   id: string
   userId: string
   status: string
+  total: number
   createdAt: string
   updatedAt: string
+  shippingAddress: string
   items: {
     id: string
     productId: string
@@ -45,7 +47,7 @@ export default function ManageOrders() {
   }
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Manage Orders</h1>
       <div className="space-y-4">
         {orders.map(order => (
@@ -53,6 +55,7 @@ export default function ManageOrders() {
             <h2 className="text-xl font-semibold">Order ID: {order.id}</h2>
             <p className="text-gray-600">User ID: {order.userId}</p>
             <p className="text-gray-600">Created At: {new Date(order.createdAt).toLocaleString()}</p>
+            <p className="text-gray-600">Total: ${order.total.toFixed(2)}</p>
             <div className="mt-2">
               <label htmlFor={`status-${order.id}`} className="mr-2">Status:</label>
               <select
@@ -76,6 +79,8 @@ export default function ManageOrders() {
                 </li>
               ))}
             </ul>
+            <h3 className="text-lg font-semibold mt-4">Shipping Address:</h3>
+            <p>{order.shippingAddress}</p>
           </div>
         ))}
       </div>

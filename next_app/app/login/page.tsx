@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,12 +22,12 @@ export default function Login() {
       })
 
       if (response.ok) {
-        router.push('/users')
+        router.push('/admin/users')
       } else {
         const data = await response.json()
         setError(data.error || 'Login failed')
       }
-    } catch (err) {
+    } catch (error) {
       setError('An error occurred. Please try again.')
     }
   }

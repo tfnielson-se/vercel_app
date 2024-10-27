@@ -4,7 +4,6 @@ export default async function User({
 }): Promise<JSX.Element> {
   const { rows } = await sql`SELECT * from USER`;
 
-
   return (
     <div>
       {rows.map((row) => (
