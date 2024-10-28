@@ -153,33 +153,33 @@ function AdminProducts() {
           placeholder="Image URL"
           className="w-full p-2 border rounded"
         />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <button type="submit" className="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600">
           {editingProduct ? 'Update Product' : 'Add Product'}
         </button>
         {editingProduct && (
           <button
             type="button"
             onClick={cancelEdit}
-            className="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            className="ml-2 bg-gray-500 text-black px-4 py-2 rounded hover:bg-gray-600"
           >
             Cancel
           </button>
         )}
       </form>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-black">
+      <div className="overflow-x-auto bg-gray-200 border-2 border-gray-900 rounded-md">
+        <table className="min-w-full text-black">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-red-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-blue-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Description
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-green-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Price
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-yellow-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -189,6 +189,7 @@ function AdminProducts() {
               <tr key={product.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.description}</td>
+                <td className="px-6 py-4 whitespace-nowrap"><img src={product.image}></img></td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.price}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button

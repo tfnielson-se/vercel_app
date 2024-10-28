@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 				name,
 				email,
 				password: hashedPassword,
-				is_admin: false,
+				is_admin,
 			},
 		});
 		return NextResponse.json(

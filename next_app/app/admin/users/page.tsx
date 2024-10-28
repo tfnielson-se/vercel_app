@@ -147,36 +147,36 @@ function AdminUsers() {
           />
           <label htmlFor="is_admin">Is Admin</label>
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <button type="submit" className="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-600">
           {editingUser ? 'Update User' : 'Add User'}
         </button>
         {editingUser && (
           <button
             type="button"
             onClick={() => setEditingUser(null)}
-            className="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            className="ml-2 bg-gray-500 text-black px-4 py-2 rounded hover:bg-gray-600"
           >
             Cancel
           </button>
         )}
       </form>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-black">
+      <div className="overflow-x-auto bg-gray-200 border-2 border-gray-900 rounded-md">
+        <table className="min-w-full text-black ">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-red-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-blue-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-green-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Is Admin
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-yellow-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Created At
               </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 border-b-2 border-purple-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Actions
               </th>
             </tr>

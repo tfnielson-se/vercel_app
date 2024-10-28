@@ -3,9 +3,11 @@
 import { useState } from 'react'
 import { useCart } from '../contexts/CartContext'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export default function Checkout() {
   const { cart, total, clearCart } = useCart()
+  const { data: session } = useSession()  // Retrieve the user session
   const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
@@ -23,6 +25,12 @@ export default function Checkout() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!session) {
+      console.error('User not authenticated')
+      return
+    }
+
     try {
       const response = await fetch('/api/orders', {
         method: 'POST',
@@ -31,6 +39,7 @@ export default function Checkout() {
           items: cart,
           total,
           shippingDetails: formData,
+          userId: session.user.id,  // Include user ID from session
         }),
       })
 
@@ -115,7 +124,6 @@ export default function Checkout() {
             type="text"
             id="zipCode"
             name="zipCode"
-            
             value={formData.zipCode}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

@@ -3,25 +3,39 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export async function GET() {
+export async function POST(request: Request) {
   try {
-    const orders = await prisma.order.findMany({
-      include: {
+    const { items, total, shippingDetails } = await request.json()
+
+    // Log received data for debugging
+    console.log('Received items:', items)
+    console.log('Received total:', total)
+    console.log('Received shippingDetails:', shippingDetails)
+
+    const userId = ''  // Replace with actual user ID if available
+
+    const order = await prisma.order.create({
+      data: {
+        userId: userId || 'guest',  // Set userId appropriately
+        status: 'pending',
+        // total: total,  // Make sure your model includes `total`
+        // shippingAddress: JSON.stringify(shippingDetails),  // Adjust based on your schema
         items: {
-          include: {
-            product: {
-              select: { name: true },
-            },
-          },
+          create: items.map((item: { id: string; quantity: number; price: number }) => ({
+            productId: item.id,
+            quantity: item.quantity,
+            price: item.price,
+          })),
         },
       },
-      orderBy: {
-        createdAt: 'desc',
+      include: {
+        items: true,
       },
     })
-    return NextResponse.json(orders)
+
+    return NextResponse.json(order, { status: 201 })
   } catch (error) {
-    console.error('Error fetching orders:', error)
-    return NextResponse.json({ error: 'Error fetching orders' }, { status: 500 })
+    console.error('Error creating order:', error)
+    return NextResponse.json({ error: 'Error creating order' }, { status: 500 })
   }
 }
