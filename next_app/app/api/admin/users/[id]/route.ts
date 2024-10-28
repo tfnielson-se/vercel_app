@@ -10,7 +10,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       where: { id: params.id },
       data: { name, email, is_admin },
     })
-    return NextResponse.json({ id: updatedUser.id, name: updatedUser.name, email: updatedUser.email, is_admin: updatedUser.is_admin })
+    return NextResponse.json({ id: updatedUser.id, name: updatedUser.name, emai2l: updatedUser.email, is_admin: updatedUser.is_admin })
   } catch (error) {
     console.error('Error updating user:', error)
     return NextResponse.json({ error: 'Error updating user' }, { status: 500 })

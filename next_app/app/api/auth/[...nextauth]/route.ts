@@ -1,11 +1,11 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -44,12 +44,7 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   session: {
-    // Specify the session strategy as 'jwt' for token-based sessions
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
-  },
-  jwt: {
-    // Extend JWT lifespan for session persistence
     maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
   },
   callbacks: {
@@ -61,6 +56,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
+        session.user.id = token.sub as string
         session.user.is_admin = token.is_admin as boolean
       }
       return session

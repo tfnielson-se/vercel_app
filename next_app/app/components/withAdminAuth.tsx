@@ -2,28 +2,28 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { JSX, useEffect } from 'react'
+import { useEffect } from 'react'
 
-export function withAdminAuth(WrappedComponent: React.ComponentType) {
-  return function WithAdminAuth(props: JSX.IntrinsicAttributes ) {
-    const { data: session, status } = useSession()
-    const router = useRouter()
+export function withAdminAuth<Props extends object>(WrappedComponent: React.ComponentType<Props>) {
+  return function WithAdminAuth(props: Props) {
+    const { data: session, status } = useSession();
+    const router = useRouter();
 
     useEffect(() => {
-      if (status === 'loading') return // Do nothing while loading
+      if (status === 'loading') return;
       if (!session || !session.user.is_admin) {
-        router.push('/login')
+        router.push('/login');
       }
-    }, [session, status, router])
+    }, [session, status, router]);
 
     if (status === 'loading') {
-      return <div className="text-center mt-8">Loading...</div>
+      return <div className="text-center mt-8">Loading...</div>;
     }
 
     if (!session || !session.user.is_admin) {
-      return null
+      return null;
     }
 
-    return <WrappedComponent {...props} />
+    return <WrappedComponent {...props} />;
   }
 }
