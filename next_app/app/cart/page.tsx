@@ -7,36 +7,36 @@ export default function Cart() {
   const { cart, removeFromCart, updateQuantity, total } = useCart()
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
+    <div className="bg-gray-50 min-h-screen p-6">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Cart</h1>
       {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className="text-gray-600">Your cart is empty.</p>
       ) : (
         <>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {cart.map((item) => (
-              <div key={item.id} className="flex items-center justify-between border-b pb-2">
+              <div key={item.id} className="bg-white shadow-md rounded-lg p-4 flex items-center justify-between transition-transform transform hover:scale-105">
                 <div>
-                  <h2 className="text-lg font-semibold">{item.name}</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{item.name}</h2>
                   <p className="text-gray-600">${item.price.toFixed(2)}</p>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center text-black">
                   <button
                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    className="bg-red-500 px-2 py-1 rounded-l"
+                    className="bg-red-500 text-black px-3 py-1 rounded-l-md focus:outline-none focus:ring-2 focus:ring-red-400"
                   >
                     -
                   </button>
-                  <span className="px-2">{item.quantity}</span>
+                  <span className="px-4">{item.quantity}</span>
                   <button
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    className="bg-red-500 px-2 py-1 rounded-r"
+                    className="bg-red-500 text-black px-3 py-1 rounded-r-md focus:outline-none focus:ring-2 focus:ring-red-400"
                   >
                     +
                   </button>
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="ml-2 text-red-500"
+                    className="ml-4 text-red-500 font-semibold focus:outline-none focus:ring-2 focus:ring-red-400"
                   >
                     Remove
                   </button>
@@ -44,9 +44,9 @@ export default function Cart() {
               </div>
             ))}
           </div>
-          <div className="mt-4">
-            <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
-            <Link href="/checkout" className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 inline-block">
+          <div className="mt-6 bg-white shadow-md rounded-lg p-4">
+            <p className="text-xl font-bold text-gray-900">Total: ${total.toFixed(2)}</p>
+            <Link href="/checkout" className="mt-4 block w-full bg-blue-600 text-black text-center px-4 py-2 rounded-md transition-colors duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
               Proceed to Checkout
             </Link>
           </div>
