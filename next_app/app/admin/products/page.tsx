@@ -177,9 +177,12 @@ function AdminProducts() {
                 Description
               </th>
               <th className="px-6 py-3 border-b-2 border-green-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Price
+                Image
               </th>
               <th className="px-6 py-3 border-b-2 border-yellow-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Price
+              </th>
+              <th className="px-6 py-3 border-b-2 border-purple-300 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -189,7 +192,7 @@ function AdminProducts() {
               <tr key={product.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.description}</td>
-                <td className="px-6 py-4 whitespace-nowrap"><img alt='' src={product.image}></img></td>
+                <td className="px-6 py-4 whitespace-nowrap"><img alt='' src={product.image} className='w-10'></img></td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.price}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
