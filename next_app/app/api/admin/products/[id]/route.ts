@@ -3,16 +3,22 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+// Update product by ID
+export async function PUT(request: Request) {
   try {
-    const { name, description, price, image } = await request.json();
-    
+    const { id, name, description, price, image } = await request.json(); // Include id in the request body
+
     const updatedProduct = await prisma.product.update({
-      where: { id: params.id },
+      where: { id },
       data: { name, description, price, image },
     });
 
-    return NextResponse.json({id: updatedProduct.id, description: updatedProduct.description, price: updatedProduct.price, image: updatedProduct.image});
+    return NextResponse.json({
+      id: updatedProduct.id,
+      description: updatedProduct.description,
+      price: updatedProduct.price,
+      image: updatedProduct.image,
+    });
   } catch (error) {
     console.error("Error updating product:", error);
     return NextResponse.json(
@@ -22,11 +28,15 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+// Delete product by ID
+export async function DELETE(request: Request) {
   try {
+    const { id } = await request.json(); // Include id in the request body
+
     await prisma.product.delete({
-      where: { id: params.id },
+      where: { id },
     });
+    
     return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error('Error deleting product:', error);
