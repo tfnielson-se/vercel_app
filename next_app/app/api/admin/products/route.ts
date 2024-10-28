@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export async function GET() {
   try {
@@ -11,31 +11,47 @@ export async function GET() {
         name: true,
         description: true,
         price: true,
-        image: true
-
+        image: true,
+        updatedAt: true,
+        createdAt: true,
       },
-    })
-    return NextResponse.json(products)
+    });
+    return NextResponse.json(products);
   } catch (error) {
-    console.error('Error fetching products:', error)
-    return NextResponse.json({ error: 'Error fetching products' }, { status: 500 })
+    console.error('Error fetching products:', error);
+    return NextResponse.json(
+      { error: 'Error fetching products' },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const { name, description, price, image } = await request.json()
+    const { name, description, price, image } = await request.json();
     const product = await prisma.product.create({
       data: {
         name,
         description,
         price,
-        image
+        image,
       },
-    })
-    return NextResponse.json({ id: product.id, name: product.name, description: product.description, price: product.price, image: product.image}, { status: 201 })
+    });
+    return NextResponse.json(
+      {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        image: product.image,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    console.error('Error creating product:', error)
-    return NextResponse.json({ error: 'Error creating product' }, { status: 500 })
+    console.error('Error creating product:', error);
+    return NextResponse.json(
+      { error: 'Error creating product' },
+      { status: 500 }
+    );
   }
 }

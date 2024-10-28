@@ -22,6 +22,7 @@ function AdminUsers() {
     fetchUsers()
   }, [])
   console.log(users)
+
   const fetchUsers = async () => {
     try {
       setIsLoading(true)
@@ -105,7 +106,7 @@ function AdminUsers() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">Manage Users</h1>
+      <h1 className="text-2xl font-semibold mb-4 text-black">Manage Users</h1>
       <form onSubmit={handleSubmit} className="mb-8 space-y-4">
         <input
           type="text"
