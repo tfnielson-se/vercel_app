@@ -189,7 +189,7 @@ function AdminProducts() {
               <tr key={product.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.description}</td>
-                <td className="px-6 py-4 whitespace-nowrap"><img src={product.image}></img></td>
+                <td className="px-6 py-4 whitespace-nowrap"><img alt='' src={product.image}></img></td>
                 <td className="px-6 py-4 whitespace-nowrap">{product.price}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button

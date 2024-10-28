@@ -2,10 +2,10 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { JSX, useEffect } from 'react'
 
 export function withAdminAuth(WrappedComponent: React.ComponentType) {
-  return function WithAdminAuth(props: any) {
+  return function WithAdminAuth(props: JSX.IntrinsicAttributes ) {
     const { data: session, status } = useSession()
     const router = useRouter()
 

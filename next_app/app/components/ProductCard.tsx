@@ -35,6 +35,7 @@ export default function ProductCard({
       return;
     }
     onSave({ id, name, description, price, image });
+    setErrors(errors)
   };
 
   const isValidUrl = (url: string) => {
