@@ -41,6 +41,10 @@ export default function ProductList() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Our Products</h1>
+
+      {isLoading && <p>Loading products...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
           <div key={product.id} className="border rounded-lg p-4">
