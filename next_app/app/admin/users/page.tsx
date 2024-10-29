@@ -21,7 +21,6 @@ function AdminUsers() {
   useEffect(() => {
     fetchUsers()
   }, [])
-  console.log(users)
 
   const fetchUsers = async () => {
     try {
@@ -84,11 +83,10 @@ function AdminUsers() {
     setEditingUser(user)
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (user: User) => {
     try {
-      const response = await fetch(`/api/admin/users/${id}`, {
+      const response = await fetch(`/api/admin/users/${user.id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
       });
       if (!response.ok) {
         throw new Error('Failed to delete user');
@@ -199,7 +197,7 @@ function AdminUsers() {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(user)}
                     className="text-red-600 hover:text-red-900"
                   >
                     Delete

@@ -71,8 +71,13 @@ function AdminOrders() {
     }
   }
 
-  if (isLoading) return <div className="text-center mt-8">Loading orders...</div>
-  if (error) return <div className="text-center mt-8 text-red-600">{error}</div>
+  if (isLoading) {
+    return <div className="text-center mt-8">Loading orders...</div>
+  }
+
+  if (error) {
+    return <div className="text-center mt-8 text-red-600">{error}</div>
+  }
 
   return (
     <div className="container mx-auto p-4">

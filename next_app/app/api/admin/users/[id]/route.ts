@@ -4,10 +4,9 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // Update user by ID
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-  const id = await params.id;
+export async function PUT(request: Request) {
   try {
-    const { name, email, is_admin } = await request.json();
+    const { id, name, email, is_admin } = await request.json(); // Include id in the request body
 
     const updatedUser = await prisma.user.update({
       where: { id },
@@ -27,10 +26,13 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 // Delete user by ID
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-  const id = await params.id;
+export async function DELETE(request: NextRequest) {
+  // Extract the ID from the URL
+  const { pathname } = request.nextUrl;
+  const id = pathname.split('/').pop(); // Get the last segment of the path
+
   try {
-    console.log(`Deleting user with ID: ${id}`);
+    console.log("DELETING", id);
 
     await prisma.user.delete({
       where: { id },
@@ -42,3 +44,4 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     return NextResponse.json({ error: 'Error deleting user' }, { status: 500 });
   }
 }
+
