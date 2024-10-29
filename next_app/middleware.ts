@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
 
   if (!token) {
     // If no token exists, redirect to login regardless of the path
-    return NextResponse.redirect(new URL('/login', request.url))
+    return NextResponse.redirect(new URL('/home', request.url))
   }
 
   if (request.nextUrl.pathname.startsWith('/admin')) {

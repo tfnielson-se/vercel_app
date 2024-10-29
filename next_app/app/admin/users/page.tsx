@@ -86,15 +86,18 @@ function AdminUsers() {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' })
+      const response = await fetch(`/api/admin/users/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (!response.ok) {
-        throw new Error('Failed to delete user')
+        throw new Error('Failed to delete user');
       }
-      await fetchUsers()
+      await fetchUsers(); // Refresh the user list after deletion
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while deleting the user')
+      setError(err instanceof Error ? err.message : 'An error occurred while deleting the user');
     }
-  }
+  };
 
   if (isLoading) {
     return <div className="text-center mt-8">Loading users...</div>

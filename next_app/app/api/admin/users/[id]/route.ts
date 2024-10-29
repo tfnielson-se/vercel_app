@@ -1,12 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 // Update user by ID
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+  const id = await params.id;
   try {
-    const { id, name, email, is_admin } = await request.json(); // Include id in the request body
+    const { name, email, is_admin } = await request.json();
 
     const updatedUser = await prisma.user.update({
       where: { id },
@@ -26,9 +27,10 @@ export async function PUT(request: Request) {
 }
 
 // Delete user by ID
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  const id = await params.id;
   try {
-    const { id } = await request.json(); // Include id in the request body
+    console.log(`Deleting user with ID: ${id}`);
 
     await prisma.user.delete({
       where: { id },
