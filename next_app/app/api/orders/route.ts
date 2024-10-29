@@ -1,14 +1,14 @@
-import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
-    const { items, userId } = await request.json()  // Retrieve items and userId from request payload
+    const { items, userId } = await request.json();  // Retrieve items and userId from request payload
 
-    console.log('Received items:', items)
-    console.log('Received userId:', userId)  // Log userId for debugging
+    console.log('Received items:', items);
+    console.log('Received userId:', userId);  // Log userId for debugging
 
     const order = await prisma.order.create({
       data: {
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         status: 'pending',
         items: {
           create: items.map((item: { id: string; quantity: number; price: number }) => ({
-            productId: item.id,
+            product: { connect: { id: item.id } },  // Ensure item.id is the Product's id
             quantity: item.quantity,
             price: item.price,
           })),
@@ -25,11 +25,12 @@ export async function POST(request: Request) {
       include: {
         items: true,
       },
-    })
+    });
 
-    return NextResponse.json(order, { status: 201 })
+    return NextResponse.json(order, { status: 201 });
   } catch (error) {
-    console.error('Error creating order:', error)
-    return NextResponse.json({ error: 'Error creating order' }, { status: 500 })
+    console.log("ERROR MESSAGE")
+    console.error('Error creating order:', error);
+    return NextResponse.json({ error: 'Error creating order' }, { status: 500 });
   }
 }
