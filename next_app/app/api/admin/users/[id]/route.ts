@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -26,9 +26,13 @@ export async function PUT(request: Request) {
 }
 
 // Delete user by ID
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
+  // Extract the ID from the URL
+  const { pathname } = request.nextUrl;
+  const id = pathname.split('/').pop(); // Get the last segment of the path
+
   try {
-    const { id } = await request.json(); // Include id in the request body
+    console.log("DELETING", id);
 
     await prisma.user.delete({
       where: { id },
@@ -40,3 +44,4 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Error deleting user' }, { status: 500 });
   }
 }
+

@@ -95,9 +95,10 @@ function AdminProducts() {
     setEditingProduct(product)
   }
 
-  const handleDeleteProduct = async (id: string) => {
+  const handleDeleteProduct = async (product: Product) => {
     try {
-      const response = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
+      const response = await fetch(`/api/admin/products/${product.id}`,
+        { method: 'DELETE' })
       if (!response.ok) throw new Error('Failed to delete product')
       await fetchProducts()
     } catch (err) {
@@ -202,7 +203,7 @@ function AdminProducts() {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDeleteProduct(product.id)}
+                    onClick={() => handleDeleteProduct(product)}
                     className="text-red-600 hover:text-red-900"
                   >
                     Delete
