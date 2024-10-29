@@ -71,7 +71,7 @@ function AdminUsers() {
         if (!response.ok) {
           throw new Error('Failed to create user')
         }
-        setNewUser({ name: '', email: '', password: '', is_admin: false })
+        setNewUser({ name: '', email: '', password: '', is_admin: true })
       }
       await fetchUsers()
     } catch (err) {

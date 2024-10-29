@@ -33,7 +33,7 @@ model Product {
 model Order {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
   status    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -43,9 +43,9 @@ model Order {
 model OrderItem {
   id        String   @id @default(cuid())
   orderId   String
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order     Order    @relation(fields: [orderId], references: [id])
   productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
   quantity  Int
   price     Float
 }
