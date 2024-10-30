@@ -17,11 +17,11 @@ function AdminProducts() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
   useEffect(() => {
     fetchProducts()
   }, [])
 
-  console.log(products)
 
   const fetchProducts = async () => {
     setIsLoading(true)
@@ -106,11 +106,9 @@ function AdminProducts() {
     }
   }
 
-
   const cancelEdit = () => {
     setEditingProduct(null)
   }
-
 
   if (isLoading) return <div className="text-center mt-8">Loading products...</div>
   if (error) return <div className="text-center mt-8 text-red-600">{error}</div>

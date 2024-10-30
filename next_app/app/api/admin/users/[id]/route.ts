@@ -31,6 +31,7 @@ export async function DELETE(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const id = pathname.split('/').pop(); // Get the last segment of the path
 
+  console.log(id)
   try {
     console.log("DELETING", id);
 

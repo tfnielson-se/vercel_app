@@ -5,22 +5,29 @@ const prisma = new PrismaClient();
 
 // Update order status by ID
 export async function PUT(request: NextRequest) {
-    try {
-        const { id, status } = await request.json(); // Include id and status in the request body
+  try {
+      const { pathname } = request.nextUrl;
+      const id = pathname.split("/").pop(); // Extracts the order ID from the URL
 
-        const updatedOrder = await prisma.order.update({
-            where: { id },
-            data: { status },
-        });
+      if (!id) {
+          return NextResponse.json({ error: "Order ID is required" }, { status: 400 });
+      }
 
-        return NextResponse.json({
-            id: updatedOrder.id,
-            status: updatedOrder.status,
-        });
-    } catch (error) {
-        console.error("Error updating order:", error);
-        return NextResponse.json({ error: "Error updating order" }, { status: 500 });
-    }
+      const { status } = await request.json();
+
+      const updatedOrder = await prisma.order.update({
+          where: { id },
+          data: { status },
+      });
+
+      return NextResponse.json({
+          id: updatedOrder.id,
+          status: updatedOrder.status,
+      });
+  } catch (error) {
+      console.error("Error updating order:", error);
+      return NextResponse.json({ error: "Error updating order" }, { status: 500 });
+  }
 }
 
 // Delete order by ID

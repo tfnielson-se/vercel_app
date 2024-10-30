@@ -41,7 +41,7 @@ function AdminUsers() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target
     const inputValue = type === 'checkbox' ? checked : value
-    console.log(editingUser)
+
     if (editingUser) {
       setEditingUser({ ...editingUser, [name]: inputValue })
     } else {
