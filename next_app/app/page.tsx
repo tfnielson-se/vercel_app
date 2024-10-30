@@ -1,23 +1,12 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Home() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
   const images = [
     '/placeholder.svg?height=600&width=1200',
     '/placeholder.svg?height=600&width=1200',
     '/placeholder.svg?height=600&width=1200'
   ]
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }, 5000)
-
-    return () => clearInterval(timer)
-  }, [])
 
   return (
     <div className="relative min-h-screen bg-gray-50">
