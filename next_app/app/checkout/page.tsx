@@ -12,7 +12,8 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);  // Loading state for UX feedback
   const [errorMessage, setErrorMessage] = useState<string | null>(null);  // Error message state
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // POST submit order
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     if (!session) {
@@ -45,15 +46,6 @@ export default function Checkout() {
       } else {
         setErrorMessage('Failed to place order. Please try again.');
         console.error('Failed to create order');
-
-        // console.log(({
-        //   items: cart.map((item) => ({
-        //     id: item.id,
-        //     quantity: item.quantity,
-        //     price: item.price,
-        //   })),
-        //   userId: session.user.id,
-        // }))
 
       }
     } catch (error) {

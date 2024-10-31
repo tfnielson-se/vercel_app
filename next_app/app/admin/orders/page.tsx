@@ -47,6 +47,7 @@ function AdminOrders() {
     }
   }
 
+  // PUT Order Status Change Edit
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
       const response = await fetch(`/api/admin/orders/${orderId}`, {
@@ -61,6 +62,7 @@ function AdminOrders() {
     }
   }
 
+  // DELETE Order
   const handleDelete = async (id: string) => {
     try {
       const response = await fetch(`/api/admin/orders/${id}`, { method: 'DELETE' })

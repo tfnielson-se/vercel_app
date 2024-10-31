@@ -22,6 +22,7 @@ function AdminUsers() {
     fetchUsers()
   }, [])
 
+  // GET users
   const fetchUsers = async () => {
     try {
       setIsLoading(true)
@@ -38,7 +39,8 @@ function AdminUsers() {
     }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Set user attributes
+  const handleInputChange = (e: { target: { name: string; value: string; type: string; checked: boolean } }) => {
     const { name, value, type, checked } = e.target
     const inputValue = type === 'checkbox' ? checked : value
 
@@ -49,6 +51,7 @@ function AdminUsers() {
     }
   }
 
+  // PUT edited user or NEW edit Form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -79,10 +82,12 @@ function AdminUsers() {
     }
   }
 
+  // Set user into form to  be edited
   const handleEdit = (user: User) => {
     setEditingUser(user)
   }
 
+  // DELETE user
   const handleDelete = async (user: User) => {
     try {
       const response = await fetch(`/api/admin/users/${user.id}`, {
@@ -182,7 +187,7 @@ function AdminUsers() {
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
-            <tr>
+            <tr className="">
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Is Admin</th>

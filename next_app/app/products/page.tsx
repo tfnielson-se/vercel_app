@@ -21,6 +21,7 @@ export default function ProductList() {
     fetchProducts()
   }, [])
 
+  // GET /products
   const fetchProducts = async () => {
     try {
       setIsLoading(true)
@@ -37,6 +38,7 @@ export default function ProductList() {
     }
   }
 
+// Add prod to cart
   const handleAddToCart = (product: Product) => {
     addToCart({
       id: product.id,
