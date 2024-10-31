@@ -22,6 +22,7 @@ function AdminProducts() {
     fetchProducts()
   }, [])
 
+  // GET Products
   const fetchProducts = async () => {
     setIsLoading(true)
     try {
@@ -36,10 +37,11 @@ function AdminProducts() {
     }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Set attributes
+  const handleInputChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
     const inputValue = name === 'price' ? parseFloat(value) || 0 : value;
-  
+
     if (editingProduct) {
       setEditingProduct({ ...editingProduct, [name]: inputValue });
     } else {
@@ -47,7 +49,8 @@ function AdminProducts() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Submit Form depending on action
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     if (editingProduct) {
       await updateProduct()
@@ -56,6 +59,7 @@ function AdminProducts() {
     }
   }
 
+  // POST new product
   const createProduct = async () => {
     try {
       const response = await fetch('/api/admin/products', {
@@ -71,6 +75,7 @@ function AdminProducts() {
     }
   }
 
+  // PUT edit products
   const updateProduct = async () => {
     try {
       const response = await fetch(`/api/admin/products/${editingProduct?.id}`, {
@@ -88,10 +93,12 @@ function AdminProducts() {
     }
   }
 
+  // Set Product to be edited
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product)
   }
 
+  // DELETE Product
   const handleDeleteProduct = async (product: Product) => {
     try {
       const response = await fetch(`/api/admin/products/${product.id}`,
@@ -103,6 +110,7 @@ function AdminProducts() {
     }
   }
 
+  // Cancel Edit, Clear Form
   const cancelEdit = () => {
     setEditingProduct(null)
   }

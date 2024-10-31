@@ -13,13 +13,19 @@ export default function Header() {
   const { cart } = useCart()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  // Set number of items in Cart for display
+  let totalQuantity = 0;
+  cart.forEach(item => {
+    totalQuantity += item.quantity;
+  });
+
   const handleAdminNavigation = (path: string) => {
     router.push(path)
     setIsMenuOpen(false)
   }
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-gray-100 shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -33,7 +39,7 @@ export default function Header() {
               Products
             </Link>
             <Link href="/cart" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              Cart ({cart.length})
+              Cart ({totalQuantity})
             </Link>
             {status === 'authenticated' && session.user ? (
               <>
@@ -97,7 +103,7 @@ export default function Header() {
             Products
           </Link>
           <Link href="/cart" className="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">
-            Cart ({cart.length})
+            Cart ({totalQuantity})
           </Link>
           {status === 'authenticated' && session.user ? (
             <>
